@@ -1,16 +1,52 @@
 import React ,{useState} from 'react'
 
-export default function Form() {
+export default function Form(props) {
   const [text,seText]= useState('Enter Text Here');
   let[count,setCount]=useState(0);
+
+  const[myStyle, setMyStyle]=useState({
+    color:'black',
+    background:'white'
+
+
+  })
+  const [one,two]=useState('Light')
+
+  function handlemode(){
+
+    if( myStyle.background === "white"){
+      setMyStyle({color:'#ddd',background:'#1A1A1D',transition:'.3s ease'});
+      two('Dark')
+    }
+    else{
+      setMyStyle({color:'black',
+        background:'white',transition:'.3s ease'});
+        two('Light');
+    }
+  }
+
   function handleclick(){
     let newText= text.toUpperCase();
     seText(newText);
+    props.showAlert(" Converted To Upper case", "success");
   }
   function handleclick2(){
     let newText=text.toLowerCase();
     seText(newText);
+    props.showAlert(" Converted To Lower case", "success");
   }
+  const handlecopy =() => {
+    var val=text;
+    
+    navigator.clipboard.writeText(val);
+    props.showAlert(" Text copied", "success");
+  }
+
+  function handleformat(){
+    let newText= text.split(/[ ]+/);
+    seText(newText.join(" "));
+  }
+  props.showAlert(" Formatted", "success");
   function handleonchange(event){
     let updated= event.target.value;
     let vowcount=0;
@@ -24,21 +60,22 @@ export default function Form() {
     }
   }
   return (
-    <div>
-      <div>
-    <div className="mb-3">
-    <label htmlFor="textarea1" className="form-label">Enter Text Below</label>
-    <textarea className="form-control" value={text} onChange={handleonchange} id="exampleFormControlTextarea1" rows="8"></textarea>
+    <div >
+      <div className="my-3" >
+    <div className="my-3" >
+    <textarea style={{backgroundColor:props.mode==="light"?"white":"grey",color:props.mode==="light"?"black":"white"}}  className="form-control" value={text} onChange={handleonchange} id="mybox" rows="8"></textarea>
     </div>
     <button className="btn btn-primary" onClick={handleclick}>Click to uppercase</button>
     <button style={{ marginLeft: '10px' }}className="btn btn-secondary" onClick={handleclick2}>Click to lowercase</button>
+    <button style={{ marginLeft: '10px' }}className="btn btn-secondary" onClick={handlecopy}>Copy Text</button>
+    <button style={{ marginLeft: '10px' }}className="btn btn-secondary" onClick={handleformat}>Format Text</button>
     </div> 
 
-    <div className="container my-3">
-      <h1>Your Text Summary</h1>
-      <p>Words are {text.split(" ").length} and Characters are {text.length}</p>
-      <p>you will take {0.008 * text.split(" ").length} Minutes to read</p>
-      <p> number of vowels : {count}</p>
+    <div className="container my-3" >
+      <h1 style={{color:props.mode==="light"?"black":"white"}}>Your Text Summary</h1>
+      <p style={{color:props.mode==="light"?"black":"white"}}>Words are <b>{text.split(" ").length}</b> and Characters are <b>{text.length}</b></p>
+      <p style={{color:props.mode==="light"?"black":"white"}}>you will take<b> {0.008 * text.split(" ").length}</b> Minutes to read</p>
+      <p style={{color:props.mode==="light"?"black":"white"}}> number of vowels : <b>{count}</b></p>
     </div>
     </div>
   )
