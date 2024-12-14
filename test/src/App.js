@@ -4,8 +4,17 @@ import './header.css';
 
 import Navbar from './components/Navbar';
 import Form from './components/Form';
-import React ,{useState} from 'react'
 import Alert from './components/Alert';
+import About from './components/About';
+import React ,{useState} from 'react'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Routes,
+  Link
+} from "react-router-dom";
 
 
 function App() {
@@ -15,18 +24,48 @@ function App() {
     color:"black"
   })
 
-  const [alert, setAlert]=useState(null)
-  const showAlert=(message, type)=>{
+
+  const [alert, setAlert]=useState(null);
+
+  const showAlert=(message,type)=>{
     setAlert({
       msg:message,
       type:type
     })
 
-
+    setTimeout(() => {
+      setAlert(null)
+    }, 1500);
 
   }
 
+  const toggleFire=()=>{
+    document.body.style.background="#FF474D";
+    setMode("dark");
+    setLabel("dark");
+    setStyle({
+      color:"white"
+    });
 
+  }
+
+  const toggleCalm=()=>{
+    document.body.style.background="#FFFAA0";
+    setMode("light");
+    setLabel("light");
+    setStyle({
+      color:"black"
+    });
+  }
+
+  const toggleBreeze=()=>{
+    document.body.style.background="#DAF7A6";
+    setMode("light");
+    setLabel("light");
+    setStyle({
+      color:"black"
+    });
+  }
   const toggleMode = ()=>{
     if(mode === "light"){
       setMode("dark");
@@ -35,7 +74,7 @@ function App() {
       setStyle({
         color:"white"
       });
-      showAlert(" Dark Mode Activated", "success");
+      showAlert("Welcome to Dark Side!","success");
     }
     else{
       setMode("light");
@@ -44,18 +83,21 @@ function App() {
       setStyle({
         color:"black"
       });
-      showAlert(" Light Mode Activated", "success");
+      showAlert("Welcome to Light Side!","success");
     }
     }
   return (
     <>
-  <Navbar title="freejam2" field="Home Albums" style={style} label={label} mode ={mode} toggleMode={toggleMode}/>
-  <Alert  alert={alert}/>
+    <Router>
+  <Navbar toggleFire={toggleFire} toggleCalm={toggleCalm} toggleBreeze={toggleBreeze} title="QuikEdit" field="Home" style={style} label={label} mode ={mode} toggleMode={toggleMode}/>
   <div className="container">
-  <Form showAlert={showAlert} mode={mode}/>
-  
+  <Alert alert={alert}/>
+  <Routes>
+  <Route exact path="/" element={<Form showAlert={showAlert} mode={mode} />} />
+  <Route exact path="/about" element= {<About style={style}  mode={mode} />} />
+  </Routes>
   </div>
-
+  </Router>
   </>
   );
 }

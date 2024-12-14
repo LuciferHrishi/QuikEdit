@@ -4,49 +4,29 @@ export default function Form(props) {
   const [text,seText]= useState('Enter Text Here');
   let[count,setCount]=useState(0);
 
-  const[myStyle, setMyStyle]=useState({
-    color:'black',
-    background:'white'
-
-
-  })
-  const [one,two]=useState('Light')
-
-  function handlemode(){
-
-    if( myStyle.background === "white"){
-      setMyStyle({color:'#ddd',background:'#1A1A1D',transition:'.3s ease'});
-      two('Dark')
-    }
-    else{
-      setMyStyle({color:'black',
-        background:'white',transition:'.3s ease'});
-        two('Light');
-    }
-  }
-
+ 
   function handleclick(){
     let newText= text.toUpperCase();
     seText(newText);
-    props.showAlert(" Converted To Upper case", "success");
+    props.showAlert("Converted to upper case", "success")
   }
   function handleclick2(){
     let newText=text.toLowerCase();
     seText(newText);
-    props.showAlert(" Converted To Lower case", "success");
+    props.showAlert("Converted to lower case", "success")
   }
   const handlecopy =() => {
     var val=text;
     
     navigator.clipboard.writeText(val);
-    props.showAlert(" Text copied", "success");
+    props.showAlert("Copy Cat!", "success")
   }
 
   function handleformat(){
     let newText= text.split(/[ ]+/);
     seText(newText.join(" "));
+    props.showAlert("Laaaazzzyyyy.....!!", "success")
   }
-  props.showAlert(" Formatted", "success");
   function handleonchange(event){
     let updated= event.target.value;
     let vowcount=0;
